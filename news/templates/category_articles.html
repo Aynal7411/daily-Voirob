@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}{{ category.name }} News{% endblock %}
+
+{% block content %}
+<h2>Articles in "{{ category.name }}"</h2>
+<div class="row">
+    {% for article in articles %}
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.title }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ article.title }}</h5>
+                <a href="{% url 'article_detail' article.slug %}" class="btn btn-outline-primary btn-sm">Read More</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>No articles in this category yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}
