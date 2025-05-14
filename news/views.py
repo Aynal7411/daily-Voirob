@@ -1,5 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render,redirect,get_object_or_404
 from .models import NewsArticle, Category
+from django.contrib import messages
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
 
 def home(request):
     featured = NewsArticle.objects.filter(featured=True)
@@ -13,3 +16,28 @@ def article_detail(request, slug):
 def category_articles(request, category_id):
     articles = NewsArticle.objects.filter(category_id=category_id)
     return render(request, 'category_articles.html', {'articles': articles})
+
+
+def register(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        
+        # Check if username is already taken
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username already taken")
+            return redirect('register')
+
+        # Create new user
+        user = User.objects.create_user(username=username, password=password)
+        user.save()
+
+        # Redirect to login page
+        messages.success(request, "Registration successful. Please log in.")
+        return redirect('login')
+
+    return render(request, 'register.html')
+
+def user_logout(request):
+    logout(request)
+    return redirect('home')
