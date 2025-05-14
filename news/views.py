@@ -38,6 +38,24 @@ def register(request):
 
     return render(request, 'register.html')
 
+
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        
+        # Authenticate user
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            login(request, user)
+            return redirect('home')  # Redirect to home or dashboard after successful login
+        else:
+            messages.error(request, "Invalid username or password")
+            return redirect('login')
+
+    return render(request, 'login.html')  
+
 def user_logout(request):
     logout(request)
     return redirect('home')
