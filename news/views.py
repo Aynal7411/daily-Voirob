@@ -3,6 +3,7 @@ from .models import NewsArticle, Category
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.db.models import Q
 
 def home(request):
     featured = NewsArticle.objects.filter(featured=True)
@@ -15,8 +16,15 @@ def article_detail(request, slug):
 
 def category_articles(request, slug):
     category = get_object_or_404(Category, slug=slug)
-    articles = Article.objects.filter(category=category, published=True)
+    articles =NewsArticle.objects.filter(category=category, published=True)
     return render(request, 'category_articles.html', {'articles': articles, 'category': category})
+
+
+
+def search(request):
+    query = request.GET.get('q')
+    articles = NewsArticle.objects.filter(Q(title__icontains=query) | Q(content__icontains=query))
+    return render(request, 'search.html', {'articles': articles, 'query': query})
 
 
 def register(request):

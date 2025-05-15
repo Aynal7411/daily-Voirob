@@ -36,7 +36,10 @@ footer {
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'home' %}">Home</a>
                 </li>
-
+          <form class="d-flex" method="GET" action="{% url 'search' %}">
+                <input class="form-control me-2" type="search" placeholder="Search" name="q" aria-label="Search">
+                <button class="btn btn-outline-light" type="submit">Search</button>
+            </form>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="#">Hi, {{ user.username }}</a>
