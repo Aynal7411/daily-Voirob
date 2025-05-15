@@ -13,9 +13,10 @@ def article_detail(request, slug):
     article = get_object_or_404(NewsArticle, slug=slug)
     return render(request, 'article_detail.html', {'article': article})
 
-def category_articles(request, category_id):
-    articles = NewsArticle.objects.filter(category_id=category_id)
-    return render(request, 'category_articles.html', {'articles': articles})
+def category_articles(request, slug):
+    category = get_object_or_404(Category, slug=slug)
+    articles = Article.objects.filter(category=category, published=True)
+    return render(request, 'category_articles.html', {'articles': articles, 'category': category})
 
 
 def register(request):

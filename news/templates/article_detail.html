@@ -1,12 +1,36 @@
 {% extends 'base.html' %}
-{% block title %}{{ article.title }}{% endblock %}
+{% load static %}
 
 {% block content %}
-<h2>{{ article.title }}</h2>
-<p><strong>Category:</strong> {{ article.category.name }}</p>
-<img src="{{ article.image.url }}" class="img-fluid my-3" alt="{{ article.title }}">
-<div>
-    {{ article.content|safe }}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <article class="shadow-sm p-4 bg-white rounded">
+                <!-- Title -->
+                <h1 class="mb-3">{{ article.title }}</h1>
+
+                <!-- Date -->
+                <p class="text-muted">Published on {{ article.created_at|date:"F j, Y, g:i A" }}</p>
+
+                <!-- Image (if exists) -->
+                {% if article.image %}
+                <img src="{{ article.image.url }}" class="img-fluid rounded mb-4" alt="{{ article.title }}">
+                {% endif %}
+
+                <!-- Content -->
+                <div class="article-content">
+                    {{ article.content|safe }}
+                </div>
+
+                <!-- Tags or categories (optional) -->
+                {# Uncomment and adjust if you have tags/categories #}
+                {# <p class="mt-3">Tags: {{ article.tags.all|join:", " }}</p> #}
+            </article>
+
+            <div class="mt-4">
+                <a href="{% url 'home' %}" class="btn btn-secondary">&larr; Back to Home</a>
+            </div>
+        </div>
+    </div>
 </div>
-<a href="{% url 'home' %}" class="btn btn-secondary mt-3">Back to Home</a>
 {% endblock %}
